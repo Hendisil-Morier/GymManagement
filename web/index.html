@@ -1,10 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <meta http-equiv="refresh" content="0;url=login">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gym Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #111, #222);
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            padding: 80px 20px;
+        }
+
+        header h1 {
+            font-size: 42px;
+            color: #ff7a00;
+            margin-bottom: 15px;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        .section {
+            margin: 60px auto;
+            width: 80%;
+            max-width: 900px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature-box {
+            background: #1c1c1c;
+            padding: 25px;
+            border-radius: 10px;
+            width: 250px;
+            margin: 15px;
+            transition: 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            background: #2a2a2a;
+        }
+
+        .feature-box h3 {
+            color: #ff7a00;
+            margin-bottom: 10px;
+        }
+
+        .login-section {
+            margin-top: 60px;
+        }
+
+        .btn-login {
+            display: inline-block;
+            padding: 14px 30px;
+            background-color: #ff7a00;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #e56d00;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding: 20px;
+            background-color: #111;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        @media(max-width: 768px) {
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <p>Redirecting to login...</p>
+
+    <header>
+        <h1>Chào Mừng Đến Với Phòng Gym Của Chúng Tôi</h1>
+        <p>Khám phá các tiện ích, dịch vụ và gói tập chuyên nghiệp dành cho bạn</p>
+    </header>
+
+    <div class="section">
+        <h2>Giới thiệu</h2>
+
+        <div class="features">
+            <div class="feature-box">
+                <p>Phòng gym của chúng tôi là nơi lý tưởng để bạn rèn luyện sức khỏe và 
+                    nâng cao thể lực mỗi ngày. Với không gian rộng rãi, thoáng mát cùng 
+                    hệ thống máy móc hiện đại, phòng gym đáp ứng đầy đủ nhu cầu tập luyện từ cardio,
+                    tăng cơ đến giảm mỡ. Đội ngũ huấn luyện viên nhiệt tình, giàu kinh nghiệm luôn 
+                    sẵn sàng hỗ trợ và xây dựng lộ trình tập phù hợp cho từng người. 
+                    Hãy đến và trải nghiệm môi trường tập luyện năng động, 
+                    chuyên nghiệp và tràn đầy năng lượng!</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="section">
+        <h2>Dịch Vụ Nổi Bật</h2>
+
+        <div class="features">
+            <div class="feature-box">
+                <h3>Trang Thiết Bị Hiện Đại</h3>
+                <p>Máy chạy bộ, tạ, thiết bị cardio và nhiều hơn nữa.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>Huấn Luyện Viên Cá Nhân</h3>
+                <p>PT chuyên nghiệp hỗ trợ bạn đạt mục tiêu nhanh hơn.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>Gói Tập Linh Hoạt</h3>
+                <p>Nhiều lựa chọn từ 1 tháng đến 12 tháng phù hợp mọi nhu cầu.</p>
+            </div>
+        </div>
+
+        <div class="login-section">
+            <h2>Truy Cập Hệ Thống</h2>
+            <p>Bạn cần đăng nhập để sử dụng hệ thống quản lý phòng gym.</p>
+            <a href="login.jsp" class="btn-login">Sign In</a>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Gym Management System | All Rights Reserved
+    </footer>
+
 </body>
 </html>
