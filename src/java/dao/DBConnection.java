@@ -19,13 +19,13 @@ public class DBConnection {
             + "encrypt=true;trustServerCertificate=true";
 
     public static String userDB = "sa";
-    public static String passDB ="thogia2006";
+    public static String passDB ="123456";
     
     public static Connection getConnection() {
         Connection con = null;
         try {
-            Class.forName(driverName);
-            con = DriverManager.getConnection(dbURL,userDB,passDB);
+            Class.forName(DRIVER);
+            con = DriverManager.getConnection(URL,userDB,passDB);
             return con;
         } catch (Exception ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
