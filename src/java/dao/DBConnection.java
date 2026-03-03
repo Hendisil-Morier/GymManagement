@@ -5,7 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ *
+ * @author minht
+ */
 public class DBConnection {
 
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -13,31 +16,30 @@ public class DBConnection {
     private static final String URL =
             "jdbc:sqlserver://localhost:1433;"
             + "databaseName=GymManagement;"
-            + "encrypt=true;"
-            + "trustServerCertificate=true";
+            + "encrypt=true;trustServerCertificate=true";
 
-    private static final String USER = "sa";
-    private static final String PASSWORD = "minhan18";
-
-    public static Connection getConnection() throws SQLException {
+    public static String userDB = "sa";
+    public static String passDB ="thogia2006";
+    
+    public static Connection getConnection() {
+        Connection con = null;
         try {
-            Class.forName(DRIVER);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBConnection.class.getName())
-                  .log(Level.SEVERE, "Driver not found!", ex);
+            Class.forName(driverName);
+            con = DriverManager.getConnection(dbURL,userDB,passDB);
+            return con;
+        } catch (Exception ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return null;
     }
-
+    
     public static void main(String[] args) {
         try (Connection con = getConnection()) {
             if (con != null) {
-                System.out.println(" Connect to EmployeeManagement SUCCESS");
+                System.out.println("KET NOI DB THANH CONG");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DBConnection.class.getName())
-                  .log(Level.SEVERE, " Connection FAILED", ex);
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

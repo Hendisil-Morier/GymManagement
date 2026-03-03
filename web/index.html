@@ -1,10 +1,317 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <meta http-equiv="refresh" content="0;url=login">
-    <title>Gym Management System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gym Management System</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #111;
+    color: white;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 60px;
+    background-color: #000;
+}
+
+.navbar h2 {
+    color: #ff7a00;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #ff7a00;
+}
+
+.btn-login {
+    padding: 8px 18px;
+    background-color: #ff7a00;
+    border-radius: 5px;
+}
+
+.btn-login:hover {
+    background-color: #e56d00;
+    color: white !important;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+    height: 500px;
+    background: url("https://images.unsplash.com/photo-1558611848-73f7eb4001a1")
+                no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-blend-mode: overlay;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.hero-content h1 {
+    font-size: 45px;
+    color: #ff7a00;
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 18px;
+}
+
+/* ===== INTRO SECTION ===== */
+.intro {
+    padding: 60px 100px;
+    text-align: center;
+}
+
+.intro h2 {
+    margin-bottom: 25px;
+    color: #ff7a00;
+}
+
+.intro p {
+    max-width: 1000px;
+    margin: auto;
+    line-height: 1.8;
+    font-size: 17px;
+    color: #ddd;
+}
+
+/* ===== FEATURES ===== */
+.features {
+    padding: 60px 50px;
+    text-align: center;
+}
+
+.features h2 {
+    color: #ff7a00;
+    margin-bottom: 40px;
+}
+
+.feature-box-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.feature-box {
+    background: #1c1c1c;
+    padding: 25px;
+    border-radius: 10px;
+    width: 280px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.feature-box:hover {
+    transform: translateY(-8px);
+    background: #2a2a2a;
+}
+
+.feature-box h3 {
+    color: #ff7a00;
+    margin-bottom: 10px;
+}
+
+/* ===== DYNAMIC SECTION ===== */
+
+.hidden {
+    display: none;
+}
+
+.dynamic-section {
+    padding: 60px 50px;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.card {
+    background: #1c1c1c;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.price {
+    color: #ff7a00;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #000;
+    color: #aaa;
+    margin-top: 50px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+    }
+
+    .intro {
+        padding: 40px 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 30px;
+    }
+}
+</style>
 </head>
+
 <body>
-    <p>Redirecting to login...</p>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>GYM SYSTEM</h2>
+    <div class="nav-links">
+        <a href="index.html">Trang Chủ</a>
+        <a href="login.jsp" class="btn-login">Login</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Chào Mừng Đến Với Phòng Gym Của Chúng Tôi</h1>
+        <p>Khám phá các tiện ích, dịch vụ và gói tập chuyên nghiệp dành cho bạn</p>
+    </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+    <h2>Giới Thiệu</h2>
+    <p>
+        Phòng gym của chúng tôi là nơi lý tưởng để bạn rèn luyện sức khỏe và nâng cao thể lực mỗi ngày.
+        Với không gian rộng rãi, thoáng mát cùng hệ thống máy móc hiện đại, phòng gym đáp ứng đầy đủ
+        nhu cầu tập luyện từ cardio, tăng cơ đến giảm mỡ. Đội ngũ huấn luyện viên nhiệt tình,
+        giàu kinh nghiệm luôn sẵn sàng hỗ trợ và xây dựng lộ trình tập phù hợp cho từng người.
+        Hãy đến và trải nghiệm môi trường tập luyện năng động, chuyên nghiệp và tràn đầy năng lượng!
+    </p>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+    <h2>Dịch Vụ Nổi Bật</h2>
+
+    <div class="feature-box-container">
+        <div class="feature-box" onclick="showEquipment()">
+            <h3>Trang Thiết Bị Hiện Đại</h3>
+            <p>Máy chạy bộ, tạ, thiết bị cardio và nhiều hơn nữa.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>Huấn Luyện Viên Cá Nhân</h3>
+            <p>PT chuyên nghiệp hỗ trợ bạn đạt mục tiêu nhanh hơn.</p>
+        </div>
+
+        <div class="feature-box" onclick="showPackages()">
+            <h3>Gói Tập Linh Hoạt</h3>
+            <p>Nhiều lựa chọn từ 1 tháng đến 12 tháng phù hợp mọi nhu cầu.</p>
+        </div>
+    </div>
+</section>
+
+<!-- EQUIPMENT -->
+<section id="equipmentSection" class="dynamic-section hidden">
+    <h2>Trang Thiết Bị</h2>
+    <div class="grid">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e">
+            <h3>Treadmill Pro X200</h3>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80">
+            <h3>Dumbbell Set 5-50kg</h3>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61">
+            <h3>Bench Press Station</h3>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1579758629938-03607ccdbaba">
+            <h3>Spin Bike Elite</h3>
+        </div>
+    </div>
+</section>
+
+<!-- PACKAGES -->
+<section id="packageSection" class="dynamic-section hidden">
+    <h2>Các Gói Tập</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Basic 1 Month</h3>
+            <div class="price">500000 VND</div>
+        </div>
+        <div class="card">
+            <h3>Standard 3 Months</h3>
+            <div class="price">1350000 VND</div>
+        </div>
+        <div class="card">
+            <h3>Premium 6 Months</h3>
+            <div class="price">2500000 VND</div>
+        </div>
+        <div class="card">
+            <h3>VIP 12 Months</h3>
+            <div class="price">4500000 VND</div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2026 Gym Management System | All Rights Reserved
+</footer>
+
+<script>
+function showEquipment() {
+    document.getElementById("equipmentSection").classList.toggle("hidden");
+    document.getElementById("packageSection").classList.add("hidden");
+    document.getElementById("equipmentSection").scrollIntoView({behavior: "smooth"});
+}
+
+function showPackages() {
+    document.getElementById("packageSection").classList.toggle("hidden");
+    document.getElementById("equipmentSection").classList.add("hidden");
+    document.getElementById("packageSection").scrollIntoView({behavior: "smooth"});
+}
+</script>
+
 </body>
 </html>
