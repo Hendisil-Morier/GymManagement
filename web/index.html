@@ -14,36 +14,103 @@
         }
 
         body {
-            background: linear-gradient(to right, #111, #222);
+            background-color: #111;
             color: white;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 60px;
+            background-color: #000;
+        }
+
+        .navbar h2 {
+            color: #ff7a00;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff7a00;
+        }
+
+        .btn-login {
+            padding: 8px 18px;
+            background-color: #ff7a00;
+            border-radius: 5px;
+        }
+
+        .btn-login:hover {
+            background-color: #e56d00;
+            color: white !important;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            height: 500px;
+            background: url("https://images.unsplash.com/photo-1558611848-73f7eb4001a1")
+                        no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            background-blend-mode: overlay;
+            background-color: rgba(0,0,0,0.6);
         }
 
-        header {
-            padding: 80px 20px;
-        }
-
-        header h1 {
-            font-size: 42px;
+        .hero-content h1 {
+            font-size: 45px;
             color: #ff7a00;
             margin-bottom: 15px;
         }
 
-        header p {
+        .hero-content p {
             font-size: 18px;
+        }
+
+        /* ===== INTRO SECTION ===== */
+        .intro {
+            padding: 60px 100px;
+            text-align: center;
+        }
+
+        .intro h2 {
+            margin-bottom: 25px;
+            color: #ff7a00;
+        }
+
+        .intro p {
+            max-width: 1000px;
+            margin: auto;
+            line-height: 1.8;
+            font-size: 17px;
             color: #ddd;
         }
 
-        .section {
-            margin: 60px auto;
-            width: 80%;
-            max-width: 900px;
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 60px 50px;
+            text-align: center;
         }
 
-        .features {
+        .features h2 {
+            color: #ff7a00;
+            margin-bottom: 40px;
+        }
+
+        .feature-box-container {
             display: flex;
-            justify-content: space-around;
-            margin-top: 40px;
+            justify-content: center;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
@@ -51,13 +118,12 @@
             background: #1c1c1c;
             padding: 25px;
             border-radius: 10px;
-            width: 250px;
-            margin: 15px;
+            width: 280px;
             transition: 0.3s;
         }
 
         .feature-box:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             background: #2a2a2a;
         }
 
@@ -66,71 +132,69 @@
             margin-bottom: 10px;
         }
 
-        .login-section {
-            margin-top: 60px;
-        }
-
-        .btn-login {
-            display: inline-block;
-            padding: 14px 30px;
-            background-color: #ff7a00;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 18px;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-
-        .btn-login:hover {
-            background-color: #e56d00;
-        }
-
+        /* ===== FOOTER ===== */
         footer {
-            margin-top: 80px;
+            text-align: center;
             padding: 20px;
-            background-color: #111;
+            background: #000;
             color: #aaa;
-            font-size: 14px;
+            margin-top: 50px;
         }
 
+        /* ===== RESPONSIVE ===== */
         @media(max-width: 768px) {
-            .features {
+            .navbar {
                 flex-direction: column;
-                align-items: center;
+            }
+
+            .intro {
+                padding: 40px 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 30px;
             }
         }
+
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>Chào Mừng Đến Với Phòng Gym Của Chúng Tôi</h1>
-        <p>Khám phá các tiện ích, dịch vụ và gói tập chuyên nghiệp dành cho bạn</p>
-    </header>
-
-    <div class="section">
-        <h2>Giới thiệu</h2>
-
-        <div class="features">
-            <div class="feature-box">
-                <p>Phòng gym của chúng tôi là nơi lý tưởng để bạn rèn luyện sức khỏe và 
-                    nâng cao thể lực mỗi ngày. Với không gian rộng rãi, thoáng mát cùng 
-                    hệ thống máy móc hiện đại, phòng gym đáp ứng đầy đủ nhu cầu tập luyện từ cardio,
-                    tăng cơ đến giảm mỡ. Đội ngũ huấn luyện viên nhiệt tình, giàu kinh nghiệm luôn 
-                    sẵn sàng hỗ trợ và xây dựng lộ trình tập phù hợp cho từng người. 
-                    Hãy đến và trải nghiệm môi trường tập luyện năng động, 
-                    chuyên nghiệp và tràn đầy năng lượng!</p>
-            </div>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>GYM SYSTEM</h2>
+        <div class="nav-links">
+            <a href="index.html">Trang Chủ</a>
+            <a href="login.jsp" class="btn-login">Login</a>
         </div>
-
     </div>
-    
-    <div class="section">
+
+    <!-- HERO BANNER -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Chào Mừng Đến Với Phòng Gym Của Chúng Tôi</h1>
+            <p>Khám phá các tiện ích, dịch vụ và gói tập chuyên nghiệp dành cho bạn</p>
+        </div>
+    </div>
+
+    <!-- INTRODUCTION -->
+    <section class="intro">
+        <h2>Giới Thiệu</h2>
+        <p>
+            Phòng gym của chúng tôi là nơi lý tưởng để bạn rèn luyện sức khỏe và nâng cao thể lực mỗi ngày.
+            Với không gian rộng rãi, thoáng mát cùng hệ thống máy móc hiện đại, phòng gym đáp ứng đầy đủ
+            nhu cầu tập luyện từ cardio, tăng cơ đến giảm mỡ. Đội ngũ huấn luyện viên nhiệt tình,
+            giàu kinh nghiệm luôn sẵn sàng hỗ trợ và xây dựng lộ trình tập phù hợp cho từng người.
+            Hãy đến và trải nghiệm môi trường tập luyện năng động, chuyên nghiệp và tràn đầy năng lượng!
+        </p>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
         <h2>Dịch Vụ Nổi Bật</h2>
 
-        <div class="features">
+        <div class="feature-box-container">
             <div class="feature-box">
                 <h3>Trang Thiết Bị Hiện Đại</h3>
                 <p>Máy chạy bộ, tạ, thiết bị cardio và nhiều hơn nữa.</p>
@@ -146,14 +210,9 @@
                 <p>Nhiều lựa chọn từ 1 tháng đến 12 tháng phù hợp mọi nhu cầu.</p>
             </div>
         </div>
+    </section>
 
-        <div class="login-section">
-            <h2>Truy Cập Hệ Thống</h2>
-            <p>Bạn cần đăng nhập để sử dụng hệ thống quản lý phòng gym.</p>
-            <a href="login.jsp" class="btn-login">Sign In</a>
-        </div>
-    </div>
-
+    <!-- FOOTER -->
     <footer>
         © 2026 Gym Management System | All Rights Reserved
     </footer>
