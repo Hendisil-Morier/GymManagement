@@ -6,27 +6,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Thiết bị - Hệ thống Gym</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        body { background: #eef1f5; }
-        .sidebar { background: #1e293b; min-height: 100vh; color: white; position: fixed; width: 250px; }
-        .sidebar .nav-link { color: rgba(255,255,255,0.7); padding: 12px 20px; border-radius: 6px; margin: 2px 10px; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: white; background: #2563eb; }
-        .sidebar .nav-link i { width: 24px; text-align: center; margin-right: 8px; }
-        .main-content { margin-left: 250px; padding: 30px; }
-        .brand-logo { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .brand-logo h4 { margin: 0; font-weight: bold; }
-        .user-info { padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1); position: absolute; bottom: 0; width: 100%; }
+        body {
+            background: #f5f5f7;
+            color: #222;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            background: linear-gradient(180deg, #111, #1e1e1e);
+            min-height: 100vh;
+            color: white;
+            position: fixed;
+            width: 250px;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.7);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 2px 10px;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,122,0,0.3);
+        }
+
+        .sidebar .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .brand-logo {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .brand-logo h4 {
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .user-info {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        h3 {
+            color: #ff7a00;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+            border: none;
+        }
+
+        /* ===== TABLE ===== */
+        .table thead {
+            background: #111;
+            color: white;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(255,122,0,0.05);
+        }
+
+        /* ===== BUTTON TONE CAM ===== */
+        .btn-primary {
+            background-color: #ff7a00;
+            border-color: #ff7a00;
+        }
+
+        .btn-primary:hover {
+            background-color: #e96d00;
+            border-color: #e96d00;
+        }
+
+        .btn-outline-warning {
+            border-color: #ff7a00;
+            color: #ff7a00;
+        }
+
+        .btn-outline-warning:hover {
+            background: #ff7a00;
+            color: white;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="sidebar">
     <div class="brand-logo text-center">
-        <i class="fas fa-dumbbell fa-2x mb-2 text-primary"></i>
-        <h4>HỆ THỐNG GYM</h4>
+        <i class="fas fa-dumbbell fa-2x mb-2" style="color:#ff7a00"></i>
+        <h4>GYM SYSTEM</h4>
     </div>
+
     <nav class="nav flex-column mt-3">
         <a class="nav-link" href="${pageContext.request.contextPath}/dashboard">
             <i class="fas fa-home"></i> Trang chủ
@@ -63,22 +158,25 @@
     </nav>
 
     <div class="user-info">
-        <small>Đăng nhập với</small>
-        <div class="fw-bold">${sessionScope.user.username}
+        <small class="text-muted">Đăng nhập với</small>
+        <div class="fw-bold">
+            ${sessionScope.user.username}
             <span class="badge bg-info">${sessionScope.user.role}</span>
         </div>
         <a href="${pageContext.request.contextPath}/login?action=logout"
-           class="btn btn-sm btn-outline-light mt-2 w-100">
+           class="btn btn-sm btn-outline-danger mt-2 w-100">
             <i class="fas fa-sign-out-alt me-1"></i>Đăng xuất
         </a>
     </div>
 </div>
 
 <div class="main-content">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-primary">
+        <h3 class="fw-bold">
             <i class="fas fa-dumbbell me-2"></i>Quản lý Thiết bị
         </h3>
+
         <div class="d-flex gap-2">
             <a href="${pageContext.request.contextPath}/equipment?action=maintenance"
                class="btn btn-outline-warning">
@@ -100,10 +198,10 @@
         <div class="alert alert-danger">${error}</div>
     </c:if>
 
-    <div class="card shadow-sm">
+    <div class="card">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover mb-0">
-                <thead class="table-primary">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
                 <tr>
                     <th>Tên thiết bị</th>
                     <th>Số lượng</th>
@@ -115,10 +213,12 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 <c:forEach var="item" items="${equipmentList}">
                     <tr>
                         <td class="fw-semibold">${item.equipmentName}</td>
                         <td>${item.quantity}</td>
+
                         <td>
                             <c:choose>
                                 <c:when test="${item.status == 'Active'}">
@@ -132,8 +232,10 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
+
                         <td>${item.purchaseDate}</td>
-                        <td>${item.purchasePrice} VNĐ</td>
+                        <td class="fw-bold">${item.purchasePrice} VNĐ</td>
+
                         <td>
                             <c:forEach var="s" items="${suppliers}">
                                 <c:if test="${s.supplierId == item.supplierId}">
@@ -141,10 +243,10 @@
                                 </c:if>
                             </c:forEach>
                         </td>
+
                         <td class="text-center">
                             <a href="${pageContext.request.contextPath}/equipment?action=reportMaintenance&id=${item.equipmentId}"
-                               class="btn btn-sm btn-outline-warning me-1"
-                               title="Báo bảo trì">
+                               class="btn btn-sm btn-outline-warning me-1">
                                 <i class="fas fa-tools"></i>
                             </a>
 
@@ -164,10 +266,12 @@
                         </td>
                     </tr>
                 </c:if>
+
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -14,18 +14,18 @@ public class DBConnection {
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     private static final String URL =
-            "jdbc:sqlserver://localhost:1433;"
+            "jdbc:sqlserver://DESKTOP-VHU8RKI\\SQLEXPRESS:1433;"
             + "databaseName=GymManagement;"
             + "encrypt=true;trustServerCertificate=true";
 
     public static String userDB = "sa";
-    public static String passDB ="thogia2006";
+    public static String passDB ="minhan18";
     
     public static Connection getConnection() {
         Connection con = null;
         try {
-            Class.forName(driverName);
-            con = DriverManager.getConnection(dbURL,userDB,passDB);
+            Class.forName(DRIVER);
+            con = DriverManager.getConnection(URL,userDB,passDB);
             return con;
         } catch (Exception ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);

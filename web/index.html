@@ -133,7 +133,74 @@ body {
     margin-bottom: 10px;
 }
 
+
 /* ===== DYNAMIC SECTION ===== */
+
+        /* ===== GALLERY SECTION ===== */
+        .gallery {
+            padding: 60px 50px;
+        }
+
+        .gallery h2 {
+            text-align: center;
+            color: #ff7a00;
+            margin-bottom: 35px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item span {
+            position: absolute;
+            left: 15px;
+            bottom: 15px;
+            z-index: 2;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #000;
+            color: #aaa;
+            margin-top: 50px;
+        }
+
 
 .hidden {
     display: none;
@@ -144,12 +211,27 @@ body {
     text-align: center;
 }
 
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 25px;
     margin-top: 40px;
 }
+
+            .hero-content h1 {
+                font-size: 30px;
+            }
+
+            .gallery {
+                padding: 40px 20px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        
+
 
 .card {
     background: #1c1c1c;
@@ -295,23 +377,96 @@ footer {
     </div>
 </section>
 
+
+
+
+<style>
+.gallery {
+    padding: 60px 10%;
+    background-color: #111;
+    text-align: center;
+}
+
+.gallery h2 {
+    color: orange;
+    margin-bottom: 40px;
+    font-size: 32px;
+}
+
+/* Xếp ảnh thành hàng ngang */
+.gallery-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+/* Card từng ảnh */
+.gallery-item {
+    width: 300px;
+    background-color: #1c1c1c;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.gallery-item span {
+    display: block;
+    padding: 12px;
+    color: white;
+    font-weight: 500;
+}
+
+/* Hover effect */
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+    .gallery-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+footer {
+    background: #000;
+    color: #aaa;
+    text-align: center;
+    padding: 15px;
+}
+</style>
+
+<!-- GALLERY: HÌNH ẢNH THỰC PHÒNG GYM -->
+<section class="gallery">
+    <h2>Hình Ảnh Thực Tế Phòng Gym</h2>
+
+    <div class="gallery-grid">
+        <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/3837781/pexels-photo-3837781.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Khu tạ và máy tập hiện đại">
+            <span>Khu tạ & máy tập hiện đại</span>
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Không gian tập luyện rộng rãi">
+            <span>Không gian rộng rãi, thoáng mát</span>
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/3253498/pexels-photo-3253498.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Huấn luyện viên hỗ trợ học viên">
+            <span>Huấn luyện viên luôn đồng hành</span>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
     © 2026 Gym Management System | All Rights Reserved
 </footer>
-
-<script>
-function showEquipment() {
-    document.getElementById("equipmentSection").classList.toggle("hidden");
-    document.getElementById("packageSection").classList.add("hidden");
-    document.getElementById("equipmentSection").scrollIntoView({behavior: "smooth"});
-}
-
-function showPackages() {
-    document.getElementById("packageSection").classList.toggle("hidden");
-    document.getElementById("equipmentSection").classList.add("hidden");
-    document.getElementById("packageSection").scrollIntoView({behavior: "smooth"});
-}
-</script>
-
-</body>
-</html>
