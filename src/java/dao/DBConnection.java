@@ -11,7 +11,7 @@ public class DBConnection {
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     private static final String URL =
-            "jdbc:sqlserver://DESKTOP-VHU8RKI\\SQLEXPRESS:1433;"
+            "jdbc:sqlserver://localhost:1433;"
             + "databaseName=GymManagement;"
             + "encrypt=true;"
             + "trustServerCertificate=true";

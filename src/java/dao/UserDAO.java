@@ -50,12 +50,13 @@ public class UserDAO {
     }
 
     public boolean createUser(String username, String password, int roleId) throws SQLException {
-        String sql = "INSERT INTO Users (username, password, role_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Users (username, password, role_id, status) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setInt(3, roleId);
+            ps.setString(4,"Active");
             return ps.executeUpdate() > 0;
         }
     }
