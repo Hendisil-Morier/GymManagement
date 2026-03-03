@@ -24,8 +24,8 @@ public class DBConnection {
     public static Connection getConnection() {
         Connection con = null;
         try {
-            Class.forName(driverName);
-            con = DriverManager.getConnection(dbURL,userDB,passDB);
+            Class.forName(DRIVER);
+            con = DriverManager.getConnection(URL,userDB,passDB);
             return con;
         } catch (Exception ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
