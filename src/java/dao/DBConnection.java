@@ -10,8 +10,10 @@ import java.util.logging.Logger;
  * @author minht
  */
 public class DBConnection {
-    public static String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    public static String dbURL = 
+
+    private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+    private static final String URL =
             "jdbc:sqlserver://localhost:1433;"
             + "databaseName=GymManagement;"
             + "encrypt=true;trustServerCertificate=true";
