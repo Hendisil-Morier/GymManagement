@@ -10,22 +10,20 @@ import java.util.logging.Logger;
  * @author minht
  */
 public class DBConnection {
-
-    private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-
-    private static final String URL =
-            "jdbc:sqlserver://DESKTOP-VHU8RKI\\SQLEXPRESS:1433;"
+    public static String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    public static String dbURL = 
+            "jdbc:sqlserver://localhost:1433;"
             + "databaseName=GymManagement;"
             + "encrypt=true;trustServerCertificate=true";
 
     public static String userDB = "sa";
-    public static String passDB ="minhan18";
+    public static String passDB ="thogia2006";
     
     public static Connection getConnection() {
         Connection con = null;
         try {
-            Class.forName(DRIVER);
-            con = DriverManager.getConnection(URL,userDB,passDB);
+            Class.forName(driverName);
+            con = DriverManager.getConnection(dbURL,userDB,passDB);
             return con;
         } catch (Exception ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);

@@ -100,4 +100,24 @@ public class RevenueDAO {
         }
         return list;
     }
+    
+    public Map<Integer, BigDecimal> getMonthlyRevenueMap(int year) throws SQLException {
+    Map<Integer, BigDecimal> map = new LinkedHashMap<>();
+    // Khởi tạo tất cả 12 tháng = 0 trước
+    for (int i = 1; i <= 12; i++) map.put(i, BigDecimal.ZERO);
+
+    String sql = "SELECT MONTH(revenue_date) AS m, SUM(amount) AS total "
+               + "FROM Revenue WHERE YEAR(revenue_date) = ? "
+               + "GROUP BY MONTH(revenue_date) ORDER BY m";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, year);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                map.put(rs.getInt("m"), rs.getBigDecimal("total"));
+            }
+        }
+    }
+    return map;
+}
 }
