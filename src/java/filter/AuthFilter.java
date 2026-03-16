@@ -8,18 +8,39 @@ import java.io.IOException;
 @WebFilter(filterName = "AuthFilter", urlPatterns = {"/*"})
 public class AuthFilter implements Filter {
 
+    private static String normalizePath(HttpServletRequest req) {
+        String uri = req.getRequestURI();
+        String contextPath = req.getContextPath();
+        String path = uri.startsWith(contextPath) ? uri.substring(contextPath.length()) : uri;
+        int jsessionIdx = path.indexOf(";jsessionid=");
+        if (jsessionIdx >= 0) {
+            path = path.substring(0, jsessionIdx);
+        }
+        return path.isBlank() ? "/" : path;
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        String uri = req.getRequestURI();
         String contextPath = req.getContextPath();
+        String path = normalizePath(req);
 
-        boolean isLoginPage = uri.equals(contextPath + "/login") || uri.equals(contextPath + "/login.jsp");
-        boolean isStaticResource = uri.contains(".css") || uri.contains(".js") || uri.contains(".png")
-                || uri.contains(".jpg") || uri.contains(".ico");
-        boolean isIndexPage = uri.equals(contextPath + "/") || uri.equals(contextPath + "/index.html");
+        boolean isLoginPage = "/login".equals(path) || "/login.jsp".equals(path);
+        boolean isIndexPage = "/".equals(path) || "/index.html".equals(path);
+        boolean isStaticResource = path.endsWith(".css")
+                || path.endsWith(".js")
+                || path.endsWith(".png")
+                || path.endsWith(".jpg")
+                || path.endsWith(".jpeg")
+                || path.endsWith(".gif")
+                || path.endsWith(".svg")
+                || path.endsWith(".ico")
+                || path.endsWith(".woff")
+                || path.endsWith(".woff2")
+                || path.endsWith(".ttf")
+                || path.endsWith(".map");
 
         if (isLoginPage || isStaticResource || isIndexPage) {
             chain.doFilter(request, response);

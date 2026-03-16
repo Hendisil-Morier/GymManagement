@@ -29,6 +29,19 @@
             color: white;
             background: rgba(255,122,0,0.3);
         }
+        .btn-orange{
+            background-color:#ff7a00;
+            color:white;
+            border:none;
+            border-radius:10px;
+            padding:8px 16px;
+            font-weight:500;
+         }
+
+         .btn-orange:hover{
+             background-color:#e66a00;
+             color:white;
+         }
         .sidebar .nav-link i { width: 24px; text-align: center; margin-right: 10px; }
         .main-content { margin-left: 250px; padding: 30px; }
         .brand-logo { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -69,8 +82,8 @@
 
     <div class="main-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="fas fa-users me-2" style="color:#ff7a00"></i>Danh sách hội viên</h2>
-            <a href="${pageContext.request.contextPath}/members?action=create" class="btn btn-danger">
+            <h2 class="fw-bold text-dark"><i class="fas fa-users me-2" style="color:#ff7a00"></i>Danh sách hội viên</h2>
+            <a href="${pageContext.request.contextPath}/members?action=create" class="btn btn-orange">
                 <i class="fas fa-plus me-1"></i>Thêm hội viên mới
             </a>
         </div>

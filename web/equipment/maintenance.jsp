@@ -11,12 +11,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
+
         body {
             background: #f5f5f7;
             color: #222;
         }
 
         /* ===== SIDEBAR ===== */
+
+        body { background: #f5f5f7; color: #222; }
+
+
         .sidebar {
             background: linear-gradient(180deg, #111, #1e1e1e);
             min-height: 100vh;
@@ -45,6 +50,13 @@
             margin-right: 10px;
         }
 
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+
         .brand-logo {
             padding: 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -63,6 +75,7 @@
             width: 100%;
         }
 
+
         /* ===== MAIN CONTENT ===== */
         .main-content {
             margin-left: 250px;
@@ -74,12 +87,15 @@
         }
 
         /* ===== CARD ===== */
+
+
         .card {
             background: #ffffff;
             border-radius: 16px;
             box-shadow: 0 8px 18px rgba(15,23,42,0.06);
             border: none;
         }
+
 
         /* ===== TABLE ===== */
         .table thead {
@@ -107,6 +123,7 @@
             border-color: #ff7a00;
             color: white;
         }
+
     </style>
 </head>
 

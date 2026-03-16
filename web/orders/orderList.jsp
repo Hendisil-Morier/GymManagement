@@ -131,7 +131,7 @@
 
 <div class="main-content">
 
-    <h2 class="mb-4">
+    <h2 class="fw-bold text-dark">
         <i class="fas fa-clipboard-list me-2" style="color:#ff7a00"></i>
         Danh sách đơn hàng
     </h2>
