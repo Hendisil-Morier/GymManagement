@@ -203,8 +203,8 @@
     </nav>
 
     <div class="user-info">
-        <small class="text-muted">Đăng nhập với</small>
-        <div class="fw-bold">
+        <small style="color:rgba(255,255,255,0.5);">Đăng nhập với</small>
+        <div class="fw-bold" style="color:#ffffff;">
             ${sessionScope.user.username}
             <span class="badge bg-info">${sessionScope.user.role}</span>
         </div>
@@ -261,7 +261,7 @@
                     <th>Tên thiết bị</th>
                     <th>Số lượng</th>
                     <th>Trạng thái</th>
-                    <th>Ngày mua</th>
+                    <th>Cập nhật lần cuối</th>
                     <th>Giá</th>
                     <th>Nhà cung cấp</th>
                     <th class="text-center">Thao tác</th>
@@ -288,7 +288,7 @@
                             </c:choose>
                         </td>
 
-                        <td>${item.purchaseDate}</td>
+                        <td><span class="text-muted small"><i class="fas fa-clock me-1"></i>${item.purchaseDate}</span></td>
                         <td class="fw-bold">${item.purchasePrice} VNĐ</td>
 
                         <td>
@@ -354,10 +354,7 @@
                         <label class="form-label fw-semibold">Số lượng</label>
                         <input type="number" class="form-control" name="quantity" value="1" min="1">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Ngày mua</label>
-                        <input type="date" class="form-control" name="purchaseDate">
-                    </div>
+                    <input type="hidden" name="purchaseDate" id="addPurchaseDate">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Giá mua (VNĐ)</label>
                         <input type="number" class="form-control" name="purchasePrice" min="0" step="1000" placeholder="0">
@@ -391,6 +388,7 @@
             <form method="POST" action="${pageContext.request.contextPath}/equipment">
                 <input type="hidden" name="action" value="update">
                 <input type="hidden" name="equipmentId" id="editEquipmentId">
+                <input type="hidden" name="purchaseDate" id="editPurchaseDate">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editEquipmentModalLabel">
                         <i class="fas fa-edit me-2" style="color:#ff7a00;"></i>Chỉnh Sửa Thiết Bị
@@ -440,8 +438,22 @@
 </div>
 
 <script>
+function getTodayDate() {
+    var d = new Date();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + mm + '-' + dd;
+}
+
+// Set ngày hôm nay cho modal Thêm khi trang load
+document.addEventListener('DOMContentLoaded', function() {
+    var addDate = document.getElementById('addPurchaseDate');
+    if (addDate) addDate.value = getTodayDate();
+});
+
 function openEditModal(id, name, qty, status, price, supplierId) {
     document.getElementById('editEquipmentId').value = id;
+    document.getElementById('editPurchaseDate').value = getTodayDate();
     document.getElementById('editEquipmentName').value = name;
     document.getElementById('editQuantity').value = qty;
     document.getElementById('editPurchasePrice').value = price;

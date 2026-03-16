@@ -117,7 +117,7 @@
     </nav>
 
     <div class="user-info">
-        <small class="text-muted">Đăng nhập với</small>
+        <small style="color:rgba(255,255,255,0.5);">Đăng nhập với</small>
         <div class="fw-bold">
             ${sessionScope.user.username}
             <span class="badge bg-info">${sessionScope.user.role}</span>
