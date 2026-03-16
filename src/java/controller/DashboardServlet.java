@@ -35,6 +35,7 @@ public class DashboardServlet extends HttpServlet {
             request.setAttribute("newMembersThisMonth", revenueService.getNewMembersThisMonth());
             request.setAttribute("bestSellingPackage", revenueService.getBestSellingPackage());
             request.setAttribute("monthlyRevenue", revenueService.getMonthlyRevenue(year));
+            request.setAttribute("forecastData", revenueService.getForecastData(year));
             request.setAttribute("upgradeRequired", subscriptionService.isUpgradeRequired());
             request.setAttribute("subscriptionExpired", subscriptionService.isExpired());
             request.setAttribute("activePlan", subscriptionService.getActivePlan());

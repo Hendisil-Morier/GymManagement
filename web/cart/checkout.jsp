@@ -9,57 +9,57 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { background: #f0f2f5; }
-        .sidebar { background: linear-gradient(180deg, #1a1a2e, #16213e); min-height: 100vh; color: white; position: fixed; width: 250px; }
+        body { background: #f5f5f7; color: #222; }
+        .sidebar { background: linear-gradient(180deg, #111, #1e1e1e); min-height: 100vh; color: white; position: fixed; width: 250px; }
         .sidebar .nav-link { color: rgba(255,255,255,0.7); padding: 12px 20px; border-radius: 8px; margin: 2px 10px; transition: all 0.3s; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: white; background: rgba(233,69,96,0.3); }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: white; background: rgba(255,122,0,0.3); }
         .sidebar .nav-link i { width: 24px; text-align: center; margin-right: 10px; }
         .main-content { margin-left: 250px; padding: 30px; }
         .brand-logo { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .brand-logo h4 { margin: 0; font-weight: 800; }
         .user-info { padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1); position: absolute; bottom: 0; width: 100%; }
-        .checkout-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .checkout-card { border: none; border-radius: 16px; box-shadow: 0 8px 18px rgba(15,23,42,0.06); }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <div class="brand-logo text-center">
-            <i class="fas fa-dumbbell fa-2x mb-2" style="color:#e94560"></i>
+            <i class="fas fa-dumbbell fa-2x mb-2" style="color:#ff7a00"></i>
             <h4>GYM SYSTEM</h4>
         </div>
         <nav class="nav flex-column mt-3">
-            <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"><i class="fas fa-tachometer-alt"></i> Bảng điều khiển</a>
             <c:if test="${sessionScope.user.role == 'Admin' || sessionScope.user.role == 'Staff'}">
-                <a class="nav-link" href="${pageContext.request.contextPath}/members"><i class="fas fa-users"></i> Members</a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/equipment"><i class="fas fa-cogs"></i> Equipment</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/members"><i class="fas fa-users"></i> Hội viên</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/equipment"><i class="fas fa-cogs"></i> Thiết bị</a>
             </c:if>
             <c:if test="${sessionScope.user.role == 'Admin'}">
-                <a class="nav-link" href="${pageContext.request.contextPath}/suppliers"><i class="fas fa-truck"></i> Suppliers</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/suppliers"><i class="fas fa-truck"></i> Nhà cung cấp</a>
             </c:if>
-            <a class="nav-link" href="${pageContext.request.contextPath}/packages"><i class="fas fa-box"></i> Packages</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/orders"><i class="fas fa-clipboard-list"></i> Orders</a>
+       `       <a class="nav-link" href="${pageContext.request.contextPath}/packages"><i class="fas fa-box"></i> Gói tập</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/orders"><i class="fas fa-clipboard-list"></i> Đơn hàng</a>
             <c:if test="${sessionScope.user.role == 'Member'}">
-                <a class="nav-link active" href="${pageContext.request.contextPath}/cart"><i class="fas fa-shopping-cart"></i> My Cart</a>
+                <a class="nav-link active" href="${pageContext.request.contextPath}/cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
             </c:if>
         </nav>
         <div class="user-info">
             <small class="text-muted">Logged in as</small>
             <div class="fw-bold">${sessionScope.user.username} <span class="badge bg-info">${sessionScope.user.role}</span></div>
-            <a href="${pageContext.request.contextPath}/login?action=logout" class="btn btn-sm btn-outline-danger mt-2 w-100"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+            <a href="${pageContext.request.contextPath}/login?action=logout" class="btn btn-sm btn-outline-danger mt-2 w-100"><i class="fas fa-sign-out-alt me-1"></i>Đăng xuất</a>
         </div>
     </div>
 
     <div class="main-content">
-        <h2 class="mb-4"><i class="fas fa-credit-card me-2" style="color:#e94560"></i>Checkout</h2>
+        <h2  class="fw-bold text-dark"><i class="fas fa-credit-card me-2" style="color:#ff7a00"></i>Thanh toán</h2>
 
         <c:if test="${not empty successMsg}">
             <div class="alert alert-success d-flex align-items-center" role="alert">
                 <i class="fas fa-check-circle fa-2x me-3"></i>
                 <div>
-                    <h5 class="mb-1">Order Placed Successfully!</h5>
+                    <h5 class="mb-1">Đặt hàng thành công!</h5>
                     <p class="mb-2">${successMsg}</p>
                     <a href="${pageContext.request.contextPath}/orders" class="btn btn-success btn-sm">
-                        <i class="fas fa-clipboard-list me-1"></i>View My Orders
+                        <i class="fas fa-clipboard-list me-1"></i>Xem đơn hàng của tôi
                     </a>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="fas fa-exclamation-circle fa-2x me-3"></i>
                 <div>
-                    <h5 class="mb-1">Checkout Failed</h5>
+                    <h5 class="mb-1">Thanh toán thất bại</h5>
                     <p class="mb-0">${errorMsg}</p>
                 </div>
             </div>
@@ -78,15 +78,15 @@
         <c:if test="${empty successMsg && empty errorMsg}">
             <div class="card checkout-card">
                 <div class="card-body p-4">
-                    <h5 class="card-title mb-4">Order Summary</h5>
+                    <h5 class="card-title mb-4">Tóm tắt đơn hàng</h5>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Item</th>
-                                    <th>Type</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
+                                    <th>Tên mục</th>
+                                    <th>Loại</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -112,7 +112,7 @@
                     <hr>
 
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="mb-0">Total</h4>
+                        <h4 class="mb-0">Tổng tiền</h4>
                         <h3 class="mb-0" style="color:#e94560">${cart.total} VND</h3>
                     </div>
 
@@ -130,10 +130,10 @@
                         <input type="hidden" name="action" value="placeOrder">
                         <div class="d-flex gap-3 justify-content-end">
                             <a href="${pageContext.request.contextPath}/cart" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-1"></i>Back to Cart
+                                <i class="fas fa-arrow-left me-1"></i>Quay lại giỏ hàng
                             </a>
                             <button type="submit" class="btn btn-danger btn-lg">
-                                <i class="fas fa-check me-1"></i>Place Order
+                                <i class="fas fa-check me-1"></i>Đặt hàng
                             </button>
                         </div>
                     </form>
