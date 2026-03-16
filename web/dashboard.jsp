@@ -103,7 +103,7 @@
                 <i class="fas fa-bolt"></i> Trung tâm điều khiển phòng gym
             </span>
             <h2 class="mt-2">Xin chào, ${sessionScope.user.username}!</h2>
-            <p>Quan sát nhanh doanh thu, hội viên và hoạt động trong ngày.</p>
+            <p>Chúc bạn có một ngày tốt lành!</p>
         </div>
         <div class="hero-right text-end">
             <small>Hôm nay</small>
