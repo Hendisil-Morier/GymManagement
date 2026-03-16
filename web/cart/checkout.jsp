@@ -116,6 +116,16 @@
                         <h3 class="mb-0" style="color:#e94560">${cart.total} VND</h3>
                     </div>
 
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <h5 class="mb-2"><i class="fas fa-credit-card me-2"></i>Thanh toán VNPay</h5>
+                                <p class="mb-1">Nhấn nút bên dưới để chuyển tới cổng thanh toán VNPay và hoàn tất giao dịch.</p>
+                                <p class="fw-bold mb-0" style="color:#e94560">Số tiền: ${cart.total} VND</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <form action="${pageContext.request.contextPath}/cart" method="post">
                         <input type="hidden" name="action" value="placeOrder">
                         <div class="d-flex gap-3 justify-content-end">
