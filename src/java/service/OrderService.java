@@ -19,6 +19,7 @@ public class OrderService implements IOrderService {
     private final PaymentDAO paymentDAO = new PaymentDAO();
     private final RevenueDAO revenueDAO = new RevenueDAO();
     private final MemberDAO memberDAO = new MemberDAO();
+    private final EmailService emailService = new EmailService();
 
     @Override
     public List<Order> getAllOrders() {
@@ -117,6 +118,9 @@ public class OrderService implements IOrderService {
                     type = "Loyal Member";
                 }
                 memberDAO.updateMemberType(m.getMemberId(), type);
+
+                // Gửi email xác nhận đơn hàng đã được phê duyệt
+                emailService.sendOrderApprovedEmail(m, order);
             }
 
             // Gửi email xác nhận thanh toán (nếu cấu hình SMTP)
