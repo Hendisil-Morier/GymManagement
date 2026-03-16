@@ -63,6 +63,10 @@ public class OrderService implements IOrderService {
 
     @Override
     public boolean approveOrder(int orderId) {
+        return approveOrderWithMethod(orderId, "Cash");
+    }
+
+    public boolean approveOrderWithMethod(int orderId, String method) {
         try {
             Order order = orderDAO.findById(orderId);
             if (order == null || !"Pending".equals(order.getStatus())) return false;
@@ -76,10 +80,22 @@ public class OrderService implements IOrderService {
 
             orderDAO.activateOrder(orderId, startDate, endDate);
 
+            // Gửi email xác nhận sau khi đơn đã được kích hoạt (có start/end date)
+            try {
+                Member member = memberDAO.findById(order.getMemberId());
+                Order updated = orderDAO.findById(orderId);
+                if (member != null && updated != null) {
+                    new EmailService().sendOrderApprovedEmail(member, updated);
+                }
+            } catch (Exception e) {
+                // Không chặn luồng duyệt đơn nếu gửi mail lỗi
+                e.printStackTrace();
+            }
+
             Payment payment = new Payment();
             payment.setOrderId(orderId);
             payment.setAmount(order.getTotalAmount());
-            payment.setMethod("Cash");
+            payment.setMethod(method);
             int paymentId = paymentDAO.insert(payment);
 
             if (paymentId > 0) {
@@ -102,6 +118,12 @@ public class OrderService implements IOrderService {
                 }
                 memberDAO.updateMemberType(m.getMemberId(), type);
             }
+
+            // Gửi email xác nhận thanh toán (nếu cấu hình SMTP)
+            try {
+                Member memberForEmail = memberDAO.findById(order.getMemberId());
+                util.EmailUtil.sendOrderConfirmation(memberForEmail, order);
+            } catch (Exception ignored) {}
 
             return true;
         } catch (Exception e) {

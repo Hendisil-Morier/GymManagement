@@ -8,9 +8,13 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.*;
 import service.OrderService;
+import util.VNPayConfig;
+import util.VNPayUtil;
 
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
@@ -44,6 +48,17 @@ public class CartServlet extends HttpServlet {
                 break;
             case "checkout":
                 request.setAttribute("cart", cart);
+
+                // Nhận kết quả thanh toán VNPay (nếu được redirect về)
+                String successOrderId = request.getParameter("successOrderId");
+                String vnpResponseCode = request.getParameter("vnp_ResponseCode");
+
+                if (successOrderId != null) {
+                    request.setAttribute("successMsg", "Thanh toán VNPay thành công! Mã đơn #" + successOrderId);
+                } else if (vnpResponseCode != null && !"00".equals(vnpResponseCode)) {
+                    request.setAttribute("errorMsg", "Thanh toán VNPay không thành công. Mã phản hồi: " + vnpResponseCode);
+                }
+
                 request.getRequestDispatcher("/cart/checkout.jsp").forward(request, response);
                 break;
             default:
@@ -126,10 +141,34 @@ public class CartServlet extends HttpServlet {
 
             int orderId = orderService.createOrder(order, details);
             if (orderId > 0) {
-                cart.clear();
-                request.setAttribute("orderId", orderId);
-                request.setAttribute("successMsg", "Order placed successfully! Order #" + orderId);
-                request.getRequestDispatcher("/cart/checkout.jsp").forward(request, response);
+                // Tạo URL thanh toán VNPay và redirect người dùng sang cổng VNPay
+                BigDecimal total = order.getTotalAmount() != null ? order.getTotalAmount() : cart.getTotal();
+
+                Map<String, String> vnpParams = new HashMap<>();
+                vnpParams.put("vnp_Version", VNPayConfig.VNP_VERSION);
+                vnpParams.put("vnp_Command", VNPayConfig.VNP_COMMAND);
+                vnpParams.put("vnp_TmnCode", VNPayConfig.VNP_TMN_CODE);
+                vnpParams.put("vnp_Amount", total.multiply(new BigDecimal(100)).setScale(0).toBigInteger().toString());
+                vnpParams.put("vnp_CurrCode", VNPayConfig.VNP_CURRENCY_CODE);
+                vnpParams.put("vnp_Locale", VNPayConfig.VNP_LOCALE);
+                vnpParams.put("vnp_OrderType", VNPayConfig.VNP_ORDER_TYPE);
+                vnpParams.put("vnp_TxnRef", String.valueOf(orderId));
+                vnpParams.put("vnp_OrderInfo", "Thanh toan don hang #" + orderId);
+
+                String baseReturnUrl = request.getScheme() + "://" + request.getServerName()
+                        + ":" + request.getServerPort() + request.getContextPath() + VNPayConfig.VNP_RETURN_URL_PATH;
+                vnpParams.put("vnp_ReturnUrl", baseReturnUrl);
+
+                vnpParams.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
+                vnpParams.put("vnp_CreateDate", VNPayUtil.getCurrentTimestamp());
+                vnpParams.put("vnp_ExpireDate", VNPayUtil.getExpireTimestamp());
+
+                String paymentUrl = VNPayUtil.buildPaymentUrl(vnpParams);
+
+                // Lưu cart tạm trong session để sau khi thanh toán xong có thể xóa
+                session.setAttribute("cart", cart);
+
+                response.sendRedirect(paymentUrl);
             } else {
                 request.setAttribute("errorMsg", "Failed to place order.");
                 request.setAttribute("cart", cart);

@@ -80,7 +80,6 @@
 
         <c:if test="${sessionScope.user.role == 'Admin'}">
             <a class="nav-link" href="${pageContext.request.contextPath}/suppliers"><i class="fas fa-truck"></i> Nhà cung cấp</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/subscriptions"><i class="fas fa-crown"></i> Gói hệ thống</a>
         </c:if>
 
         <a class="nav-link" href="${pageContext.request.contextPath}/packages"><i class="fas fa-box"></i> Gói tập</a>
@@ -113,13 +112,6 @@
     </div>
 
     <c:if test="${sessionScope.user.role == 'Admin'}">
-        <c:if test="${upgradeRequired}">
-            <div class="alert alert-warning"><i class="fas fa-exclamation-triangle me-2"></i>Đã đạt giới hạn số lượng hội viên! Vui lòng nâng cấp gói hệ thống.</div>
-        </c:if>
-        <c:if test="${subscriptionExpired}">
-            <div class="alert alert-danger"><i class="fas fa-times-circle me-2"></i>Gói hệ thống của bạn đã hết hạn! Vui lòng gia hạn.</div>
-        </c:if>
-
         <div class="row mb-4">
             <div class="col-md-3">
                 <div class="card stat-card">
@@ -156,7 +148,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-12">
                 <div class="card border-0 shadow-sm rounded-4">
                     <div class="card-header bg-white border-0 pt-4 px-4"><h5 class="fw-bold"><i class="fas fa-chart-bar me-2"></i>Doanh thu theo tháng</h5></div>
                     <div class="card-body">
@@ -171,21 +163,6 @@
                             </c:if>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm rounded-4">
-                    <div class="card-header bg-white border-0 pt-4 px-4"><h5 class="fw-bold"><i class="fas a-crown me-2"></i>Gói hệ thống</h5></div>
-                    <div class="card-body">
-                        <c:if test="${not empty activePlan}">
-                            <p><strong>Gói:</strong> ${activePlan.planName}</p>
-                            <p><strong>Số hội viên tối đa:</strong> ${activePlan.maxMembers == -1 ? 'Không giới hạn' : activePlan.maxMembers}</p>
-                            <p><strong>Ngày hết hạn:</strong> ${activePlan.endDate}</p>
-                        </c:if>
-                        <c:if test="${empty activePlan}">
-                            <p class="text-muted">Chưa có gói đang hoạt động</p>
-                        </c:if>
                     </div>
                 </div>
             </div>

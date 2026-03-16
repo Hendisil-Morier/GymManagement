@@ -14,9 +14,9 @@ public class DBConnection {
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     private static final String URL =
-            "jdbc:sqlserver://localhost:1433;"
-            + "databaseName=GymManagement;"
-            + "encrypt=true;trustServerCertificate=true";
+         "jdbc:sqlserver://localhost:1433;"
+        + "databaseName=GymManagement;"
+        + "encrypt=true;trustServerCertificate=true";
 
     public static String userDB = "sa";
     public static String passDB ="123456";
