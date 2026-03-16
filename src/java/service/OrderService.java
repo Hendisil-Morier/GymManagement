@@ -80,6 +80,18 @@ public class OrderService implements IOrderService {
 
             orderDAO.activateOrder(orderId, startDate, endDate);
 
+            // Gửi email xác nhận sau khi đơn đã được kích hoạt (có start/end date)
+            try {
+                Member member = memberDAO.findById(order.getMemberId());
+                Order updated = orderDAO.findById(orderId);
+                if (member != null && updated != null) {
+                    new EmailService().sendOrderApprovedEmail(member, updated);
+                }
+            } catch (Exception e) {
+                // Không chặn luồng duyệt đơn nếu gửi mail lỗi
+                e.printStackTrace();
+            }
+
             Payment payment = new Payment();
             payment.setOrderId(orderId);
             payment.setAmount(order.getTotalAmount());
