@@ -17,7 +17,7 @@ public class DBConnection {
             + "encrypt=true;trustServerCertificate=true";
 
     public static String userDB = "sa";
-    public static String passDB ="thogia2006";
+    public static String passDB ="minhan18";
     
     public static Connection getConnection() {
         Connection con = null;
