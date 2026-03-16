@@ -36,6 +36,12 @@ public class PackageServlet extends HttpServlet {
                     packageDAO.delete(delId);
                     response.sendRedirect(request.getContextPath() + "/packages");
                     break;
+                case "edit":
+                    int editId = Integer.parseInt(request.getParameter("id"));
+                    GymPackage editPkg = packageDAO.findById(editId);
+                    request.setAttribute("pkg", editPkg);
+                    request.getRequestDispatcher("/packages/edit.jsp").forward(request, response);
+                    break;
                 default:
                     List<GymPackage> packages = packageDAO.findAll();
                     List<Service> services = serviceDAO.findAll();
