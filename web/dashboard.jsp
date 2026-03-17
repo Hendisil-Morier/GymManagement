@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -103,7 +104,7 @@
                 <i class="fas fa-bolt"></i> Trung tâm điều khiển phòng gym
             </span>
             <h2 class="mt-2">Xin chào, ${sessionScope.user.username}!</h2>
-            <p>Quan sát nhanh doanh thu, hội viên và hoạt động trong ngày.</p>
+            <p>Chúc bạn có một ngày tốt lành!</p>
         </div>
         <div class="hero-right text-end">
             <small>Hôm nay</small>
@@ -149,22 +150,56 @@
 
         <div class="row">
             <div class="col-12">
-                <div class="card border-0 shadow-sm rounded-4">
-                    <div class="card-header bg-white border-0 pt-4 px-4"><h5 class="fw-bold"><i class="fas fa-chart-bar me-2"></i>Doanh thu theo tháng</h5></div>
-                    <div class="card-body">
-                        <table class="table table-sm">
-                            <thead><tr><th>Tháng</th><th class="text-end">Doanh thu (VND)</th></tr></thead>
-                            <tbody>
-                            <c:forEach var="entry" items="${monthlyRevenue}">
-                                <tr><td>${entry.key}</td><td class="text-end fw-bold text-success">${entry.value}</td></tr>
-                            </c:forEach>
-                            <c:if test="${empty monthlyRevenue}">
-                                <tr><td colspan="2" class="text-center text-muted">Chưa có dữ liệu doanh thu</td></tr>
-                            </c:if>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <div class="row mt-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h5 class="fw-bold"><i class="fas fa-chart-line me-2"></i>Doanh thu theo tháng & Dự báo</h5>
+            </div>
+            <div class="card-body">
+                <!-- Biểu đồ Chart.js -->
+                <canvas id="revenueChart" height="100"></canvas>
+
+                <!-- Bảng chi tiết bên dưới biểu đồ -->
+                <table class="table table-sm mt-4">
+                    <thead>
+                        <tr>
+                            <th>Tháng</th>
+                            <th class="text-end">Doanh thu thực tế (VND)</th>
+                            <th class="text-end">Dự báo Moving Avg (VND)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="row" items="${forecastData}">
+                        <tr>
+                            <td>Tháng ${row[0].intValue()}</td>
+                            <td class="text-end fw-bold text-success">
+                                <c:choose>
+                                    <c:when test="${row[1] > 0}">
+                                        <fmt:formatNumber value="${row[1]}" type="number" maxFractionDigits="0"/>
+                                    </c:when>
+                                    <c:otherwise><span class="text-muted">—</span></c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td class="text-end text-warning">
+                                <c:choose>
+                                    <c:when test="${row[2] >= 0}">
+                                        <fmt:formatNumber value="${row[2]}" type="number" maxFractionDigits="0"/>
+                                    </c:when>
+                                    <c:otherwise><span class="text-muted">Chưa đủ dữ liệu</span></c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    <c:if test="${empty forecastData}">
+                        <tr><td colspan="3" class="text-center text-muted">Chưa có dữ liệu doanh thu</td></tr>
+                    </c:if>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </c:if>
@@ -223,5 +258,75 @@
     </c:if>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    // Lấy dữ liệu từ server qua JSP EL -> JS
+    var labels = [];
+    var actualData = [];
+    var forecastData = [];
+
+    <c:forEach var="row" items="${forecastData}">
+        labels.push("T${row[0].intValue()}");
+        actualData.push(${row[1]});
+        forecastData.push(${row[2] >= 0 ? row[2] : 'null'});
+    </c:forEach>
+
+    var ctx = document.getElementById('revenueChart');
+    if (ctx && labels.length > 0) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Doanh thu thực tế',
+                        data: actualData,
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40,167,69,0.1)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Dự báo (Moving Avg 3 tháng)',
+                        data: forecastData,
+                        borderColor: '#ff7a00',
+                        backgroundColor: 'rgba(255,122,0,0.08)',
+                        borderWidth: 2,
+                        borderDash: [6, 3],
+                        pointRadius: 4,
+                        fill: false,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                if (ctx.raw === null) return ctx.dataset.label + ': Chưa đủ dữ liệu';
+                                return ctx.dataset.label + ': ' + ctx.raw.toLocaleString('vi-VN') + ' VND';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(v) { return v.toLocaleString('vi-VN'); }
+                        }
+                    }
+                }
+            }
+        });
+    }
+})();
+</script>
 </body>
 </html>

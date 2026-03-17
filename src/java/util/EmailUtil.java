@@ -15,10 +15,10 @@ import model.Order;
 public class EmailUtil {
 
     // Cấu hình Mailtrap sandbox để test gửi mail
-    private static final String SMTP_HOST = "sandbox.smtp.mailtrap.io";
+    private static final String SMTP_HOST = "smtp.gmail.com";
     private static final int SMTP_PORT = 587; // có thể dùng 25, 465, 587 hoặc 2525
-    private static final String EMAIL_USERNAME = "2d648703967459";
-    private static final String EMAIL_PASSWORD = "6635a569e58f7f";
+    private static final String EMAIL_USERNAME = "minaminhan18@gmail.com";
+    private static final String EMAIL_PASSWORD = "qnqs cmhf qhts unqs";
 
     public static void sendOrderConfirmation(Member member, Order order) {
         if (member == null || member.getEmail() == null || member.getEmail().isBlank()) {
