@@ -106,6 +106,14 @@
     <div class="main-content">
         <h2  class="fw-bold text-dark"><i class="fas fa-shopping-cart me-2" style="color:#ff7a00"></i>Giỏ hàng của tôi</h2>
 
+        <c:if test="${not empty sessionScope.cartError}">
+    <div class="alert alert-warning alert-dismissible fade show mt-3">
+        ${sessionScope.cartError}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <c:remove var="cartError" scope="session"/>
+</c:if>
+        
         <c:choose>
             <c:when test="${empty cart.items}">
                 <div class="text-center py-5">

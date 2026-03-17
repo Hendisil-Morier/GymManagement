@@ -15,20 +15,16 @@ import model.Order;
 
 public class EmailService {
 
-    /**
-     * Cấu hình qua biến môi trường / system properties để tránh hardcode:
-     * - Env: GYM_MAIL_USERNAME, GYM_MAIL_PASSWORD
-     * - System properties: gym.mail.username, gym.mail.password
-     */
+
     private final String username = firstNonBlank(
             System.getProperty("gym.mail.username"),
             System.getenv("GYM_MAIL_USERNAME"),
-            "YOUR_EMAIL@gmail.com" // <-- THAY EMAIL CỦA BẠN VÀO ĐÂY
+            "minaminhan18@gmail.com" // <-- THAY EMAIL CỦA BẠN VÀO ĐÂY
     );
     private final String password = firstNonBlank(
             System.getProperty("gym.mail.password"),
             System.getenv("GYM_MAIL_PASSWORD"),
-            "YOUR_APP_PASSWORD" // <-- THAY MẬT KHẨU ỨNG DỤNG GMAIL (APP PASSWORD) VÀO ĐÂY
+            "qnqs cmhf qhts unqs" // <-- THAY MẬT KHẨU ỨNG DỤNG GMAIL (APP PASSWORD) VÀO ĐÂY
     );
 
     private static String firstNonBlank(String... values) {

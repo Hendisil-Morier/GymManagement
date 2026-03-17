@@ -147,4 +147,18 @@ public class OrderDAO {
         }
         return list;
     }
+    
+    public Order findActivePackageOrder(int memberId) throws SQLException {
+    String sql = "SELECT o.* FROM Orders o " +
+                 "JOIN OrderDetails od ON o.order_id = od.order_id " +
+                 "WHERE o.member_id = ? AND o.status = 'Active' AND od.item_type = 'Package'";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, memberId);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return mapRow(rs);
+        }
+    }
+    return null;
+}
 }

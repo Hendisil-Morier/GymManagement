@@ -1,5 +1,6 @@
 package controller;
 
+import dao.OrderDAO;
 import dao.PackageDAO;
 import dao.ServiceDAO;
 import jakarta.servlet.ServletException;
@@ -79,23 +80,69 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cart", cart);
         }
 
-        if ("addPackage".equals(action)) {
-            try {
-                int pkgId = Integer.parseInt(request.getParameter("packageId"));
-                GymPackage pkg = packageDAO.findById(pkgId);
-                if (pkg != null) {
-                    CartItem item = new CartItem();
-                    item.setPackageId(pkgId);
-                    item.setPackageName(pkg.getPackageName());
-                    item.setItemType("Package");
-                    item.setQuantity(1);
-                    item.setPrice(pkg.getPrice());
-                    cart.addItem(item);
-                }
-            } catch (Exception e) { e.printStackTrace(); }
-            response.sendRedirect(request.getContextPath() + "/cart");
+if ("addPackage".equals(action)) {
+    try {
+        int pkgId = Integer.parseInt(request.getParameter("packageId"));
+        GymPackage pkg = packageDAO.findById(pkgId);
+        Member member = (Member) session.getAttribute("member");
 
-        } else if ("addService".equals(action)) {
+        if (pkg == null || member == null) {
+            response.sendRedirect(request.getContextPath() + "/packages");
+            return;
+        }
+
+        // Block if a package is already in the cart
+        boolean packageInCart = cart.getItems().stream()
+                .anyMatch(i -> "Package".equals(i.getItemType()));
+        if (packageInCart) {
+            session.setAttribute("cartError", "Bạn đã có một gói tập trong giỏ hàng.");
+            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
+        }
+
+        // Check for an active package order
+        OrderDAO orderDAO = new OrderDAO();
+        Order activeOrder = orderDAO.findActivePackageOrder(member.getMemberId());
+
+        if (activeOrder != null) {
+            // Find which package is in that order
+            List<OrderDetail> details = orderDAO.findOrderDetails(activeOrder.getOrderId());
+            int activePkgId = details.stream()
+                    .filter(d -> "Package".equals(d.getItemType()))
+                    .mapToInt(d -> d.getPackageId())
+                    .findFirst()
+                    .orElse(-1);
+
+            if (activePkgId == pkgId) {
+                // Same package — refuse
+                session.setAttribute("cartError", "Bạn đang sử dụng gói tập này.");
+                response.sendRedirect(request.getContextPath() + "/packages?action=detail&id=" + pkgId);
+                return;
+            } else {
+                // Different package — forward to confirmation page
+                GymPackage activePkg = packageDAO.findById(activePkgId);
+                request.setAttribute("newPkg", pkg);
+                request.setAttribute("activePkg", activePkg);
+                request.setAttribute("activeOrderId", activeOrder.getOrderId());
+                request.getRequestDispatcher("/cart/confirm-switch.jsp").forward(request, response);
+                return;
+            }
+        }
+
+        // No active order — just add
+        CartItem item = new CartItem();
+        item.setPackageId(pkgId);
+        item.setPackageName(pkg.getPackageName());
+        item.setItemType("Package");
+        item.setQuantity(1);
+        item.setPrice(pkg.getPrice());
+        cart.addItem(item);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    response.sendRedirect(request.getContextPath() + "/cart");}
+        else if ("addService".equals(action)) {
             try {
                 int svcId = Integer.parseInt(request.getParameter("serviceId"));
                 Service svc = serviceDAO.findById(svcId);
@@ -111,7 +158,37 @@ public class CartServlet extends HttpServlet {
             } catch (Exception e) { e.printStackTrace(); }
             response.sendRedirect(request.getContextPath() + "/cart");
 
-        } else if ("placeOrder".equals(action)) {
+        }
+         else if ("confirmSwitch".equals(action)) {
+    try {
+        int newPkgId = Integer.parseInt(request.getParameter("packageId"));
+        int expireOrderId = Integer.parseInt(request.getParameter("expireOrderId"));
+        GymPackage pkg = packageDAO.findById(newPkgId);
+        Member member = (Member) session.getAttribute("member");
+
+        if (pkg == null || member == null) {
+            response.sendRedirect(request.getContextPath() + "/packages");
+            return;
+        }
+
+        // Expire the old order
+        OrderDAO orderDAO = new OrderDAO();
+        orderDAO.updateStatus(expireOrderId, "Expired");
+
+        // Add new package to cart
+        CartItem item = new CartItem();
+        item.setPackageId(newPkgId);
+        item.setPackageName(pkg.getPackageName());
+        item.setItemType("Package");
+        item.setQuantity(1);
+        item.setPrice(pkg.getPrice());
+        cart.addItem(item);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    response.sendRedirect(request.getContextPath() + "/cart");}
+        else if ("placeOrder".equals(action)) {
             User user = (User) session.getAttribute("user");
             Member member = (Member) session.getAttribute("member");
 
