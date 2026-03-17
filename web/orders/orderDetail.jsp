@@ -142,6 +142,14 @@
        class="btn btn-outline-secondary mb-4">
         <i class="fas fa-arrow-left me-1"></i>Quay lại danh sách đơn hàng
     </a>
+       
+<c:if test="${order.status == 'Active' || order.status == 'Pending'}">
+    <a href="${pageContext.request.contextPath}/orders?action=cancel&id=${order.orderId}"
+       class="btn btn-outline-danger mb-4"
+       onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?')">
+        <i class="fas fa-times me-1"></i>Hủy đơn hàng
+    </a>
+</c:if>
 
     <div class="card detail-card mb-4">
         <div class="card-body p-4">

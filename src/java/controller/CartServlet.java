@@ -116,7 +116,7 @@ if ("addPackage".equals(action)) {
             if (activePkgId == pkgId) {
                 // Same package — refuse
                 session.setAttribute("cartError", "Bạn đang sử dụng gói tập này.");
-                response.sendRedirect(request.getContextPath() + "/packages?action=detail&id=" + pkgId);
+                response.sendRedirect(request.getContextPath() + "/cart");
                 return;
             } else {
                 // Different package — forward to confirmation page
