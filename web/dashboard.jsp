@@ -91,7 +91,7 @@
         </c:if>
     </nav>
     <div class="user-info">
-        <small class="text-muted">Đăng nhập với</small>
+        <small style="color:rgba(255,255,255,0.5);">Đăng nhập với</small>
         <div class="fw-bold">${sessionScope.user.username} <span class="badge bg-info">${sessionScope.user.role}</span></div>
         <a href="${pageContext.request.contextPath}/login?action=logout" class="btn btn-sm btn-outline-danger mt-2 w-100"><i class="fas fa-sign-out-alt me-1"></i>Đăng xuất</a>
     </div>

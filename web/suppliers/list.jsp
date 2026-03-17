@@ -66,6 +66,25 @@
             background: #111;
             color: white;
         }
+                .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+}
+    
+         .sidebar-footer {
+             margin-top: auto; /* Đẩy xuống đáy */
+             padding: 15px;
+             border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+         .sidebar-footer small {
+              color: rgba(255,255,255,0.5);
+}
+
+         .sidebar-footer .fw-bold {
+               font-size: 14px;
+}
     </style>
 </head>
 
@@ -105,6 +124,11 @@
             <i class="fas fa-clipboard-list"></i> Đơn hàng
         </a>
     </nav>
+            <div class="sidebar-footer">
+        <small style="color:rgba(255,255,255,0.5);">Đăng nhập với</small>
+        <div class="fw-bold">${sessionScope.user.username} <span class="badge bg-info">${sessionScope.user.role}</span></div>
+        <a href="${pageContext.request.contextPath}/login?action=logout" class="btn btn-sm btn-outline-danger mt-2 w-100"><i class="fas fa-sign-out-alt me-1"></i>Đăng xuất</a>
+    </div>
 </div>
 
 
