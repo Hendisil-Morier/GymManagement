@@ -470,3 +470,25 @@ footer {
 <footer>
     © 2026 Gym Management System | All Rights Reserved
 </footer>
+<script>
+function showEquipment() {
+    console.log("click equipment");
+
+    let eq = document.getElementById("equipmentSection");
+    let pk = document.getElementById("packageSection");
+
+    eq.classList.remove("hidden");
+    pk.classList.add("hidden");
+}
+
+function showPackages() {
+    console.log("click package");
+
+    let eq = document.getElementById("equipmentSection");
+    let pk = document.getElementById("packageSection");
+
+    pk.classList.remove("hidden");
+    eq.classList.add("hidden");
+}
+</script>
+</body>

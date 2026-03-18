@@ -20,6 +20,36 @@ public class RoleFilter implements Filter {
         return path.isBlank() ? "/" : path;
     }
 
+    /**
+     * Whitelist theo path:
+     * Admin  : toàn quyền
+     * Staff  : dashboard, members, equipment, packages, orders
+     * Member : dashboard, packages, cart, orders, vnpay-return
+     */
+    private boolean isAllowed(String role, String path) {
+        switch (role) {
+            case "Admin":
+                return true;
+
+            case "Staff":
+                return path.startsWith("/dashboard")
+                    || path.startsWith("/members")
+                    || path.startsWith("/equipment")
+                    || path.startsWith("/packages")
+                    || path.startsWith("/orders");
+
+            case "Member":
+                return path.startsWith("/dashboard")
+                    || path.startsWith("/packages")
+                    || path.startsWith("/cart")
+                    || path.startsWith("/orders")
+                    || path.startsWith("/vnpay-return");
+
+            default:
+                return false;
+        }
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -38,31 +68,16 @@ public class RoleFilter implements Filter {
         String path = normalizePath(req);
         String action = req.getParameter("action");
 
-        // Nếu đã đăng nhập thì không nên ở trang login (trừ khi đang logout)
+        // Đã login thì không vào lại trang login (trừ logout)
         if (("/login".equals(path) || "/login.jsp".equals(path)) && !"logout".equals(action)) {
             res.sendRedirect(contextPath + "/dashboard");
             return;
         }
 
-        if (path.startsWith("/suppliers") && !"Admin".equals(role)) {
+        // Kiểm tra whitelist
+        if (!isAllowed(role, path)) {
             res.sendRedirect(contextPath + "/dashboard");
             return;
-        }
-
-        if (path.startsWith("/subscriptions") && !"Admin".equals(role)) {
-            res.sendRedirect(contextPath + "/dashboard");
-            return;
-        }
-
-        if ((path.startsWith("/members") || path.startsWith("/equipment")) 
-                && "Member".equals(role)) {
-            res.sendRedirect(contextPath + "/dashboard");
-            return;
-        }
-
-        if ((path.startsWith("/cart") || path.startsWith("/packages")) 
-                && path.contains("action=addPackage") && !"Member".equals(role)) {
-            // Only members can add to cart
         }
 
         chain.doFilter(request, response);
