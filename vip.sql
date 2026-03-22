@@ -1,4 +1,4 @@
-CREATE DATABASE GymManagement;
+﻿CREATE DATABASE GymManagement;
 GO
 
 USE GymManagement;
@@ -252,6 +252,24 @@ VALUES
 (2, '2026-02-03 14:00:00');
 
 -- =========================
+-- 14. VOUCHERS TABLE
+-- =========================
+CREATE TABLE Vouchers (
+    voucher_id   INT PRIMARY KEY IDENTITY(1,1),
+    member_id    INT NOT NULL,
+    code         VARCHAR(50) NOT NULL UNIQUE,
+    discount_pct DECIMAL(5,2) NOT NULL DEFAULT 10.00,
+    is_used      BIT NOT NULL DEFAULT 0,
+    created_date DATE DEFAULT GETDATE(),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
+);
+
+INSERT INTO Vouchers (member_id, code, discount_pct)
+VALUES
+(1, 'GYM10-MEMBER1A', 10.00),
+(2, 'GYM10-MEMBER2A', 10.00);
+
+-- =========================
 -- USEFUL QUERIES
 -- =========================
 
@@ -279,3 +297,4 @@ ORDER BY sold DESC;
 SELECT equipment_name, status 
 FROM Equipment 
 WHERE status = 'Maintenance';
+

@@ -3,6 +3,7 @@ package controller;
 import dao.OrderDAO;
 import dao.PackageDAO;
 import dao.ServiceDAO;
+import dao.VoucherDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -23,6 +24,7 @@ public class CartServlet extends HttpServlet {
     private final PackageDAO packageDAO = new PackageDAO();
     private final ServiceDAO serviceDAO = new ServiceDAO();
     private final OrderService orderService = new OrderService();
+    private final VoucherDAO voucherDAO = new VoucherDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,6 +51,14 @@ public class CartServlet extends HttpServlet {
                 break;
             case "checkout":
                 request.setAttribute("cart", cart);
+
+                // Load vouchers chưa dùng của member
+                try {
+                    Member memberForVoucher = (Member) session.getAttribute("member");
+                    if (memberForVoucher != null) {
+                        request.setAttribute("availableVouchers", voucherDAO.findUnusedByMember(memberForVoucher.getMemberId()));
+                    }
+                } catch (Exception e) { e.printStackTrace(); }
 
                 // Nhận kết quả thanh toán VNPay (nếu được redirect về)
                 String successOrderId = request.getParameter("successOrderId");
@@ -188,7 +198,30 @@ if ("addPackage".equals(action)) {
         e.printStackTrace();
     }
     response.sendRedirect(request.getContextPath() + "/cart");}
-        else if ("placeOrder".equals(action)) {
+        else if ("applyVoucher".equals(action)) {
+            String code = request.getParameter("voucherCode");
+            Member member = (Member) session.getAttribute("member");
+            if (code != null && !code.isBlank() && member != null) {
+                try {
+                    Voucher voucher = voucherDAO.findValidByCodeAndMember(code.trim(), member.getMemberId());
+                    if (voucher != null) {
+                        BigDecimal discount = cart.getSubtotal()
+                                .multiply(voucher.getDiscountPct())
+                                .divide(new BigDecimal("100"));
+                        cart.setDiscountAmount(discount);
+                        cart.setAppliedVoucherCode(voucher.getCode());
+                        session.setAttribute("cart", cart);
+                    } else {
+                        session.setAttribute("voucherError", "Mã voucher không hợp lệ hoặc đã được sử dụng.");
+                    }
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+            response.sendRedirect(request.getContextPath() + "/cart?action=checkout");
+        } else if ("removeVoucher".equals(action)) {
+            cart.clearVoucher();
+            session.setAttribute("cart", cart);
+            response.sendRedirect(request.getContextPath() + "/cart?action=checkout");
+        } else if ("placeOrder".equals(action)) {
             User user = (User) session.getAttribute("user");
             Member member = (Member) session.getAttribute("member");
 
@@ -200,7 +233,7 @@ if ("addPackage".equals(action)) {
             Order order = new Order();
             order.setMemberId(member.getMemberId());
             order.setStatus("Pending");
-            order.setTotalAmount(cart.getTotal());
+            order.setTotalAmount(cart.getTotal()); // đã trừ discount nếu có voucher
 
             List<OrderDetail> details = new ArrayList<>();
             for (CartItem ci : cart.getItems()) {
@@ -218,6 +251,11 @@ if ("addPackage".equals(action)) {
 
             int orderId = orderService.createOrder(order, details);
             if (orderId > 0) {
+                // Lưu voucher code đã áp dụng vào session để đánh dấu used sau khi VNPay xác nhận
+                if (cart.getAppliedVoucherCode() != null) {
+                    session.setAttribute("pendingVoucherCode", cart.getAppliedVoucherCode());
+                    session.setAttribute("pendingVoucherMemberId", member.getMemberId());
+                }
                 // Tạo URL thanh toán VNPay và redirect người dùng sang cổng VNPay
                 BigDecimal total = order.getTotalAmount() != null ? order.getTotalAmount() : cart.getTotal();
 

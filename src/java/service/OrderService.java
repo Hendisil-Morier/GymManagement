@@ -4,14 +4,17 @@ import dao.MemberDAO;
 import dao.OrderDAO;
 import dao.PaymentDAO;
 import dao.RevenueDAO;
+import dao.VoucherDAO;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 import model.Member;
 import model.Order;
 import model.OrderDetail;
 import model.Payment;
 import model.Revenue;
+import model.Voucher;
 
 public class OrderService implements IOrderService {
 
@@ -19,6 +22,7 @@ public class OrderService implements IOrderService {
     private final PaymentDAO paymentDAO = new PaymentDAO();
     private final RevenueDAO revenueDAO = new RevenueDAO();
     private final MemberDAO memberDAO = new MemberDAO();
+    private final VoucherDAO voucherDAO = new VoucherDAO();
 
     @Override
     public List<Order> getAllOrders() {
@@ -80,15 +84,28 @@ public class OrderService implements IOrderService {
 
             orderDAO.activateOrder(orderId, startDate, endDate);
 
-            // Gửi email xác nhận sau khi đơn đã được kích hoạt (có start/end date)
+            // Tạo voucher 10% cho lần mua kế tiếp
+            String newVoucherCode = null;
+            try {
+                Member memberForVoucher = memberDAO.findById(order.getMemberId());
+                if (memberForVoucher != null) {
+                    Voucher voucher = new Voucher();
+                    voucher.setMemberId(memberForVoucher.getMemberId());
+                    voucher.setCode("GYM10-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+                    voucher.setDiscountPct(new BigDecimal("10.00"));
+                    voucherDAO.insert(voucher);
+                    newVoucherCode = voucher.getCode();
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+
+            // Gửi email xác nhận + thông báo voucher
             try {
                 Member member = memberDAO.findById(order.getMemberId());
                 Order updated = orderDAO.findById(orderId);
                 if (member != null && updated != null) {
-                    new EmailService().sendOrderApprovedEmail(member, updated);
+                    new EmailService().sendOrderApprovedEmail(member, updated, newVoucherCode);
                 }
             } catch (Exception e) {
-                // Không chặn luồng duyệt đơn nếu gửi mail lỗi
                 e.printStackTrace();
             }
 
@@ -118,12 +135,6 @@ public class OrderService implements IOrderService {
                 }
                 memberDAO.updateMemberType(m.getMemberId(), type);
             }
-
-            // Gửi email xác nhận thanh toán (nếu cấu hình SMTP)
-            try {
-                Member memberForEmail = memberDAO.findById(order.getMemberId());
-                util.EmailUtil.sendOrderConfirmation(memberForEmail, order);
-            } catch (Exception ignored) {}
 
             return true;
         } catch (Exception e) {

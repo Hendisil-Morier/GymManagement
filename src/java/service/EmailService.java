@@ -53,7 +53,7 @@ public class EmailService {
         });
     }
 
-    public void sendOrderApprovedEmail(Member member, Order order) {
+    public void sendOrderApprovedEmail(Member member, Order order, String voucherCode) {
         if (member == null || member.getEmail() == null || member.getEmail().isBlank()) return;
 
         try {
@@ -72,15 +72,22 @@ public class EmailService {
             );
             message.setSubject("Xác nhận đơn hàng #" + order.getOrderId());
 
-            String text = "Xin chào " + member.getFullName() + ",\n\n"
-                    + "Đơn hàng #" + order.getOrderId() + " của bạn đã được phê duyệt.\n"
-                    + "Tổng tiền: " + order.getTotalAmount() + "\n"
-                    + "Ngày bắt đầu gói: " + order.getStartDate() + "\n"
-                    + "Ngày kết thúc gói: " + order.getEndDate() + "\n\n"
-                    + "Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.";
+            StringBuilder text = new StringBuilder();
+            text.append("Xin chào ").append(member.getFullName()).append(",\n\n")
+                .append("Đơn hàng #").append(order.getOrderId()).append(" của bạn đã được phê duyệt.\n")
+                .append("Tổng tiền: ").append(order.getTotalAmount()).append(" VND\n")
+                .append("Ngày bắt đầu gói: ").append(order.getStartDate()).append("\n")
+                .append("Ngày kết thúc gói: ").append(order.getEndDate()).append("\n");
 
-            message.setText(text);
+            if (voucherCode != null) {
+                text.append("\n✨ Ưu đãi đặc biệt cho lần mua kế tiếp:\n")
+                    .append("Bạn nhận được voucher giảm 10%: ").append(voucherCode).append("\n")
+                    .append("Sử dụng mã này khi thanh toán đơn hàng tiếp theo của bạn.\n");
+            }
 
+            text.append("\nCảm ơn bạn đã sử dụng dịch vụ của chúng tôi.");
+
+            message.setText(text.toString());
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();

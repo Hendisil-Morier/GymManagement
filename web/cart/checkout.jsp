@@ -111,6 +111,63 @@
 
                     <hr>
 
+                    <%-- Voucher section --%>
+                    <div class="mb-4">
+                        <h6 class="fw-bold"><i class="fas fa-tag me-2" style="color:#ff7a00"></i>Mã khuyến mãi</h6>
+
+                        <c:if test="${not empty sessionScope.voucherError}">
+                            <div class="alert alert-warning py-2">${sessionScope.voucherError}</div>
+                            <c:remove var="voucherError" scope="session"/>
+                        </c:if>
+
+                        <c:choose>
+                            <c:when test="${not empty cart.appliedVoucherCode}">
+                                <div class="alert alert-success py-2 d-flex justify-content-between align-items-center">
+                                    <span><i class="fas fa-check-circle me-2"></i>Đã áp dụng: <strong>${cart.appliedVoucherCode}</strong> — giảm <strong>${cart.discountAmount} VND</strong></span>
+                                    <form action="${pageContext.request.contextPath}/cart" method="post" class="mb-0">
+                                        <input type="hidden" name="action" value="removeVoucher">
+                                        <button class="btn btn-sm btn-outline-danger">Hủy</button>
+                                    </form>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${not empty availableVouchers}">
+                                    <div class="mb-2">
+                                        <small class="text-muted">Voucher của bạn:</small>
+                                        <div class="d-flex flex-wrap gap-2 mt-1">
+                                            <c:forEach var="v" items="${availableVouchers}">
+                                                <form action="${pageContext.request.contextPath}/cart" method="post" class="mb-0">
+                                                    <input type="hidden" name="action" value="applyVoucher">
+                                                    <input type="hidden" name="voucherCode" value="${v.code}">
+                                                    <button class="btn btn-sm btn-outline-warning">
+                                                        <i class="fas fa-ticket-alt me-1"></i>${v.code} (-${v.discountPct}%)
+                                                    </button>
+                                                </form>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <form action="${pageContext.request.contextPath}/cart" method="post" class="d-flex gap-2">
+                                    <input type="hidden" name="action" value="applyVoucher">
+                                    <input type="text" name="voucherCode" class="form-control form-control-sm" placeholder="Nhập mã voucher..." style="max-width:220px">
+                                    <button class="btn btn-sm btn-warning">Áp dụng</button>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="text-muted">Tạm tính</span>
+                        <span>${cart.subtotal} VND</span>
+                    </div>
+                    <c:if test="${cart.discountAmount > 0}">
+                        <div class="d-flex justify-content-between align-items-center mb-1 text-success">
+                            <span>Giảm giá (voucher)</span>
+                            <span>-${cart.discountAmount} VND</span>
+                        </div>
+                    </c:if>
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="mb-0">Tổng tiền</h4>
                         <h3 class="mb-0" style="color:#e94560">${cart.total} VND</h3>
